@@ -1,8 +1,9 @@
 from manim import *
 from scipy.signal import convolve
 
- 
+    
 class Convolution(Scene):
+    
     def construct(self):
         # formula da convolução 
 
@@ -37,9 +38,9 @@ class Convolution(Scene):
         self.play(FadeOut(linha_1), FadeOut(linha_2),FadeOut(formula),FadeIn(linha_3))
         self.wait(2)
         
-        linha_4 = Text("Seja x(t) = u(t) e h(t) = u(t)",t2c={"x(t)": amarelo, "h(t)": azul},t2s={"x(t)": ITALIC, "h(t)": ITALIC, "u(t)": ITALIC},t2f={"x(t)": "Cambria Math", "h(t)": "Cambria Math", "u(t)": "Cambria Math"})
+        linha_4 = Text("Seja x(t) = u(t) e h(t) = u(t)",t2c={"x(t)": amarelo, "h(t)": azul},t2s={"x(t)": ITALIC, "h(t)": ITALIC, "u(t)": ITALIC},t2f={"x(t)": "Times New Roman", "h(t)": "Times New Roman", "u(t)": "Times New Roman"})
    
-        linha_5 = Text("onde u(t) é a função degrau unitário")
+        linha_5 = Text("em que")
         linha_5.next_to(linha_4, DOWN)
         self.play(ReplacementTransform(linha_3, linha_4), Write(linha_5))
         self.wait(1)
@@ -95,7 +96,7 @@ class Convolution(Scene):
         #self.play(FadeOut(ax),FadeOut(labels_ax2),FadeOut(h_graph))
         
         ax1 = Axes().set_color(texto)
-        ax2 = Axes(y_axis_config={"include_tip": False}).set_color(texto)
+        ax2 = Axes(y_axis_config={"include_tip": False } ).set_color(texto)
         ax3 = Axes(y_axis_config={"include_tip": False}).set_color(texto)
         ax1.scale(1).shift(2*UP).animate.set_color(GRAY)
         ax2.scale(1).animate.set_color(GRAY)    
@@ -138,7 +139,7 @@ class Convolution(Scene):
             MathTex(r"\tau"), MathTex(r"x(\tau)")
         )
         labels_ax2 = ax2.get_axis_labels(
-            MathTex(r"\tau"), MathTex(r"h(-\tau)")
+            MathTex(r"\tau"), MathTex(r"h(t-\tau)")
         )
         labels_ax3 = ax3.get_axis_labels(
             MathTex(r"t"), MathTex(r"y(t)")
@@ -155,22 +156,28 @@ class Convolution(Scene):
         self.play(Indicate(labels_ax1),Create(x_graph))
         self.wait(1)
         self.play(Indicate(labels_ax2,color=azul),Create(h_graph))
-        
-        y_graph = FunctionGraph(lambda t: t if t >= 0 else 0,x_range=[-10,1.5]).set_color(GREEN)
-        y_graph.shift(2*DOWN)
-    
+     
+        y_graph = FunctionGraph(lambda t: t if t >= 0 else 0,x_range=[0,1.5]).set_color(GREEN)
+        linha_y = FunctionGraph(lambda t: 1 if t <= 0 else 0,x_range=[-10,0]).set_color(GREEN)
+       
+       # delete o eixo y negativo do ax1 
+       
 
+        
+        y_graph.shift(2*DOWN)
+        linha_y.shift(3*DOWN)
+        # Adiciona os gráficos à cena
+    
+        self.play(
+            ApplyMethod(h_graph.shift, RIGHT*1.5, run_time=5),
+            Create(linha_y),
+            Create(y_graph, run_time=5)
+        )
         reticencias = MathTex(r"\cdots").next_to(y_graph, RIGHT)
       
-     
-        self.play(AnimationGroup(
-            ApplyMethod(h_graph.shift, RIGHT*1.5),
-            Create(y_graph),
-            run_time=5
-        ))
         self.play(Indicate(labels_ax3,color=GREEN),Indicate(reticencias,color=GREEN))
         self.wait(3)
-        self.play(FadeOut(y_graph),FadeOut(reticencias),FadeOut(labels_ax1),FadeOut(labels_ax2),FadeOut(labels_ax3),FadeOut(h_graph),FadeOut(x_graph),FadeOut(ax1),FadeOut(ax2),FadeOut(ax3),FadeOut(formula))
+        self.play(FadeOut(y_graph),FadeOut(reticencias),FadeOut(linha_y),FadeOut(labels_ax1),FadeOut(labels_ax2),FadeOut(labels_ax3),FadeOut(h_graph),FadeOut(x_graph),FadeOut(ax1),FadeOut(ax2),FadeOut(ax3),FadeOut(formula))
         self.wait(1)
         nome = Text("Reinaldo-Kn",font="Jayadhira LILA EE 0.1").set_color(BLACK)
         make = Text("Feito por").set_color(BLACK)
