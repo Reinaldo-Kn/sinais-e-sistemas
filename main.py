@@ -36,24 +36,47 @@ class Convolution(Scene):
         
         linha_3 = Text("Exemplo")
         self.play(FadeOut(linha_1), FadeOut(linha_2),FadeOut(formula),FadeIn(linha_3))
-        self.wait(2)
-        
-        linha_4 = Text("Seja x(t) = u(t) e h(t) = u(t)",t2c={"x(t)": amarelo, "h(t)": azul},t2s={"x(t)": ITALIC, "h(t)": ITALIC, "u(t)": ITALIC},t2f={"x(t)": "Times New Roman", "h(t)": "Times New Roman", "u(t)": "Times New Roman"})
-   
-        linha_5 = Text("em que")
-        linha_5.next_to(linha_4, DOWN)
-        self.play(ReplacementTransform(linha_3, linha_4), Write(linha_5))
         self.wait(1)
         
+        linha_4_seja =  MathTex(r"\text{Seja } \\",color=texto)
+        linha_4_seja.shift(2*UP)
+        linha_4 = MathTex(r"\text{x(t)} = u(t) \\",substrings_to_isolate={"x(t)": "x(t)"},color=texto)
+        linha_4.set_color_by_tex_to_color_map({
+            "x(t)": amarelo,
+        })
+        linha_4_e= MathTex(r"\text{ e }  \\",color=texto)
+        linha_4_2 = MathTex(r"\text{h(t)} = u(t) \\",substrings_to_isolate={"h(t)": "h(t)"},color=texto)
+        linha_4_2.set_color_by_tex_to_color_map({   
+            "h(t)": azul,
+        })
+        linha_5 = MathTex(r"\text{ em que } \\",color=texto)
+        linha_4.next_to(linha_4_seja, 2.5*DOWN)
+        linha_4_e.next_to(linha_4, 2.5*DOWN)
+        linha_4_2.next_to(linha_4_e, 2.5*DOWN)
+        linha_5.next_to(linha_4_2, 2.5*DOWN)
+        linha_4_seja.scale(1.5)
+        linha_4.scale(1.5)
+        linha_4_e.scale(1.5)
+        linha_4_2.scale(1.5)
+        linha_5.scale(1.5)
+        linha_4_seja.shift(2*LEFT)
+        linha_4.shift(1.5*RIGHT)
+        linha_4_2.shift(1.5*RIGHT)
+        linha_4_e.shift(2.5*LEFT)
+        linha_5.shift(1.5*LEFT)
+        self.play(ReplacementTransform(linha_3, linha_4_seja),Write(linha_4),Write(linha_4_e),Write(linha_4_2) ,Write(linha_5))
+        self.wait(1)
         funcao_degrau = MathTex(
-            r"u(t) = \begin{cases} 0, & \text{se } t < 0 \\ 1, & \text{se } t \geq 0 \end{cases}", color=texto
+            r"u(t) = \begin{cases} 0, &  t < 0 \\ 1, &  t \geq 0 \end{cases}",color=texto,
+            
         )
+
         funcao_degrau.scale(1.5)
-        funcao_degrau.next_to(linha_5, DOWN)
+        funcao_degrau.next_to(linha_4_2,DOWN)
+        funcao_degrau.shift(1.2*DOWN)
         self.play(Write(funcao_degrau))
         self.wait(3)
-        self.play(FadeOut(linha_4), FadeOut(linha_5), FadeOut(funcao_degrau))
-
+        self.play(FadeOut(linha_4_seja),FadeOut(linha_4),FadeOut(linha_4_e),FadeOut(linha_4_2),FadeOut(linha_5),FadeOut(funcao_degrau))
         # create the graphs
         
        # x_graph = FunctionGraph(lambda t: 0.75 if t >= 0 else 0).set_color(amarelo)
