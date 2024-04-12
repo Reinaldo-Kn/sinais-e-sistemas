@@ -40,14 +40,18 @@ class Convolution(Scene):
         
         linha_4_seja =  Text("Seja")
         linha_4_seja.shift(2*UP)
-        linha_4 = MathTex(r"\textit{x(t)} = u(t) \\",substrings_to_isolate={"x(t)": "x(t)"},color=texto)
+        linha_4 = MathTex(r"\textit{x}(t) = u(t)",substrings_to_isolate={"x()": "x", "=":"=","u(t)": "u(t)"},color=texto)
         linha_4.set_color_by_tex_to_color_map({
-            "x(t)": amarelo,
+            "x": amarelo,
+            "=" : texto,
+            "u(t)": texto,
         })
         linha_4_e= Text("e")
-        linha_4_2 = MathTex(r"\textit{h(t)} = u(t) \\",substrings_to_isolate={"h(t)": "h(t)"},color=texto)
+        linha_4_2 = MathTex(r"\textit{h}(t) = u(t) \\",substrings_to_isolate={"h()": "h", "=":"=","u(t)": "u(t)"},color=texto)
         linha_4_2.set_color_by_tex_to_color_map({   
-            "h(t)": azul,
+            "h": azul,
+            "=" : texto,
+            "u(t)": texto,
         })
         linha_5 = Text("em que ")
         linha_4.next_to(linha_4_seja, 2.5*DOWN)
