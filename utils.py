@@ -202,6 +202,7 @@ def genConvGIF(
     fram=200,
     inter=20,
     plotConv=False,
+    colors=['blue', 'orange', 'green']
 ):
     """
     Create and save a convolution plot animation as GIF
@@ -217,7 +218,7 @@ def genConvGIF(
     :param ylabel: ylabel [string]
     :param fram: number of frames [int]
     :param inter: time interval between frames [milliseconds]
-
+    :param colors: colors for the plots [list of strings]
     """
     x_func = lambdify(
         t, x, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}]
@@ -254,13 +255,14 @@ def genConvGIF(
     ax.legend(loc="upper right")
 
     # plot static function
-    figh = symplot(t, h, totalTime, "h(t)")
+    figh = symplot(t, h, totalTime, "h(t)",colors[0])
 
     if len(xlabel):
         plt.xlabel(xlabel)
 
     def init():
         line1.set_data(figh.get_axes()[0].lines[0].get_data())
+        line1.set_color(colors[0])
         return (line1,)
 
     plt.close(figh)
@@ -277,12 +279,12 @@ def genConvGIF(
     totalFrames = len(delays)
 
     def animate(i):
-        figx = symplot(t, x.subs({t: delays[i] - t}), totalTime, "x(t-τ)")
+        figx = symplot(t, x.subs({t: delays[i] - t}), totalTime, "x(t-τ)",colors[1])
         line2.set_data(figx.get_axes()[0].lines[0].get_data())
-
+        line2.set_color(colors[1])
         if plotConv:
             line3.set_data(totalTime[:ind[i]], y_num[:ind[i]])
-
+            line3.set_color(colors[2])
         plt.close(figx)
         return line2, line3
 
