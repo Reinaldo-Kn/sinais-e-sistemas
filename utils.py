@@ -47,15 +47,15 @@ def symplot(t, F, interval, funLabel, colors, xlabel="tempo [s]", ylabel=""):
     fig = plt.figure()
     if type(F) == list:
         for indLabel, f in enumerate(F):
-            plotFunc(t, f, interval, funLabel[indLabel], xlabel, ylabel, colors[indLabel])
+            plotFunc(t, f, interval, funLabel[indLabel], colors[indLabel], xlabel, ylabel )
     else:
-        plotFunc(t, F, interval, funLabel, xlabel, ylabel, colors)
+        plotFunc(t, F, interval, funLabel, colors, xlabel, ylabel)
     plt.grid()
     plt.close()
     return fig
 
 
-def plotFunc(t, F, interval, funLabel, xlabel, ylabel, color):
+def plotFunc(t, F, interval, funLabel, color, xlabel, ylabel):
     func = sp.lambdify(
         t, F, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}]
     )
