@@ -202,7 +202,8 @@ def genConvGIF(
     fram=200,
     inter=20,
     plotConv=False,
-    colors=['blue', 'orange', 'green']
+    colors=['blue', 'orange', 'green'],
+    figsize=(8, 6)
 ):
     """
     Create and save a convolution plot animation as GIF
@@ -219,13 +220,10 @@ def genConvGIF(
     :param fram: number of frames [int]
     :param inter: time interval between frames [milliseconds]
     :param colors: colors for the plots [list of strings]
+    :param figsize: figure size (width, height) [tuple]
     """
-    x_func = lambdify(
-        t, x, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}]
-    )
-    h_func = lambdify(
-        t, h, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}]
-    )
+    x_func = lambdify(t, x, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}])
+    h_func = lambdify(t, h, modules=["numpy", {"Heaviside": lambda t: np.heaviside(t, 0)}])
 
     x_num = x_func(totalTime)
     h_num = h_func(totalTime)
@@ -239,7 +237,7 @@ def genConvGIF(
         ymax = np.max([x_num, h_num])
         ymin = np.min([x_num, h_num])
 
-    figAnim = plt.figure()
+    figAnim = plt.figure(figsize=figsize)  # Adjust figsize here
     ax = plt.axes(
         xlim=(totalTime.min(), totalTime.max()),
         ylim=(ymin - 0.1 * np.abs(ymax), ymax + 0.1 * np.abs(ymax)),
@@ -255,7 +253,7 @@ def genConvGIF(
     ax.legend(loc="upper right")
 
     # plot static function
-    figh = symplot(t, h, totalTime, "h(t)",colors[0])
+    figh = symplot(t, h, totalTime, "h(t)", colors[0])
 
     if len(xlabel):
         plt.xlabel(xlabel)
