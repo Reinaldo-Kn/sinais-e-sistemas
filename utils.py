@@ -294,7 +294,7 @@ def genConvGIF(
         interval=inter,
         blit=True,
     )
-
+    plt.tight_layout()
     anim.save(figName, dpi=200, writer="imagemagick")
     plt.close()
 
